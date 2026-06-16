@@ -1,0 +1,12 @@
+services:
+  - type: worker
+    name: ayirboshlash-scraper
+    runtime: python
+
+    buildCommand: |
+      pip install -r ayirboshlash/requirements.txt
+      playwright install chromium
+
+    startCommand: |
+      cd ayirboshlash
+      python main.py

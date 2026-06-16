@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayirboshlash.uz — Valyuta kurslari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #0a0a0f; min-height: 100vh; color: #fff; }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image: linear-gradient(rgba(255,184,0,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,184,0,0.04) 1px, transparent 1px);
+      background-size: 40px 40px; pointer-events: none;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(10,10,15,0.85); backdrop-filter: blur(12px);
+    }
+    .logo { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; text-decoration: none; color: #fff; }
+    .logo span { color: #FFB800; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,184,0,0.1); border: 1px solid rgba(255,184,0,0.25);
+      border-radius: 20px; padding: 5px 14px; font-size: 12px; color: #FFB800;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #FFB800; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    main { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; }
+    h1 { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; letter-spacing: -2px; text-align: center; margin-bottom: 8px; }
+    h1 span { color: #FFB800; }
+    .subtitle { text-align: center; color: rgba(255,255,255,0.45); font-size: 15px; margin-bottom: 40px; }
+
+    /* FILTER TABS */
+    .tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+    .tab-btn {
+      padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.5);
+      cursor: pointer; font-size: 13px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover, .tab-btn.active { background: #FFB800; color: #000; border-color: #FFB800; }
+
+    /* TABLE */
+    .table-wrap {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; overflow: hidden; margin-bottom: 24px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 14px 20px; text-align: left; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,184,0,0.04); }
+    td { padding: 16px 20px; font-size: 14px; }
+    .cur-cell { display: flex; align-items: center; gap: 10px; }
+    .cur-flag { font-size: 22px; }
+    .cur-code { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; }
+    .cur-name { font-size: 11px; color: rgba(255,255,255,0.4); }
+    .bank-badge {
+      display: inline-block; padding: 4px 10px; border-radius: 6px;
+      font-size: 11px; font-weight: 600;
+      background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6);
+    }
+    .buy-val { color: #4ade80; font-weight: 700; font-family: 'Syne', sans-serif; font-size: 16px; }
+    .sell-val { color: #f87171; font-weight: 700; font-family: 'Syne', sans-serif; font-size: 16px; }
+    .cb-val { color: #FFB800; font-size: 13px; }
+
+    /* LOADING */
+    .loading {
+      text-align: center; padding: 60px; color: rgba(255,255,255,0.3); font-size: 14px;
+    }
+    .spinner {
+      width: 32px; height: 32px; border: 2px solid rgba(255,184,0,0.2);
+      border-top-color: #FFB800; border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* UPDATED TIME */
+    .updated { text-align: center; font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 16px; }
+
+    @media(max-width:600px) {
+      h1 { font-size: 32px; }
+      nav { padding: 14px 16px; }
+      td, thead th { padding: 12px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <nav>
+    <a class="logo" href="#">ayirboshlash<span>.uz</span></a>
+    <div class="badge"><div class="dot"></div> Jonli kurslar</div>
+  </nav>
+
+  <main>
+    <h1>Valyuta <span>kurslari</span></h1>
+    <p class="subtitle">O'zbekiston banklaridagi bugungi valyuta kurslari</p>
+
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" onclick="filterCurrency('ALL', this)">Barchasi</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Valyuta</th>
+            <th>Bank</th>
+            <th>Sotib olish</th>
+            <th>Sotish</th>
+            <th>MB kursi</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5">
+            <div class="loading">
+              <div class="spinner"></div>
+              Kurslar yuklanmoqda...
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="updated" id="updated"></div>
+  </main>
+
+  <script>
+    const FLAGS = {
+      USD:'🇺🇸', EUR:'🇪🇺', RUB:'🇷🇺', GBP:'🇬🇧',
+      CHF:'🇨🇭', JPY:'🇯🇵', KZT:'🇰🇿', AED:'🇦🇪', UZS:'🇺🇿'
+    };
+    const NAMES = {
+      USD:'AQSh dollari', EUR:'Yevro', RUB:'Rossiya rubli',
+      GBP:'Britaniya funt', CHF:'Shveytsariya franki',
+      JPY:'Yaponiya iyenasi', KZT:'Qozog\'iston tengesi',
+      AED:'BAA dirhami', UZS:'O\'zbek so\'mi'
+    };
+
+    let allData = [];
+    let currentFilter = 'ALL';
+
+    function fmt(n) {
+      if (!n && n !== 0) return '—';
+      return Number(n).toLocaleString('ru-RU', {minimumFractionDigits: 0, maximumFractionDigits: 2});
+    }
+
+    function render(data) {
+      const tbody = document.getElementById('tbody');
+      if (!data.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:rgba(255,255,255,0.3)">Ma\'lumot topilmadi</td></tr>';
+        return;
+      }
+      tbody.innerHTML = data.map(r => `
+        <tr>
+          <td>
+            <div class="cur-cell">
+              <span class="cur-flag">${FLAGS[r.currency] || '🏳️'}</span>
+              <span>
+                <div class="cur-code">${r.currency}</div>
+                <div class="cur-name">${NAMES[r.currency] || ''}</div>
+              </span>
+            </div>
+          </td>
+          <td><span class="bank-badge">${r.bank_name}</span></td>
+          <td><span class="buy-val">${fmt(r.buy)}</span></td>
+          <td><span class="sell-val">${fmt(r.sell)}</span></td>
+          <td><span class="cb-val">${fmt(r.cb_rate)}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function filterCurrency(cur, btn) {
+      currentFilter = cur;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filtered = cur === 'ALL' ? allData : allData.filter(r => r.currency === cur);
+      render(filtered);
+    }
+
+    function buildTabs(data) {
+      const currencies = [...new Set(data.map(r => r.currency))].sort();
+      const tabs = document.getElementById('tabs');
+      tabs.innerHTML = `<button class="tab-btn active" onclick="filterCurrency('ALL', this)">Barchasi</button>`;
+      currencies.forEach(cur => {
+        const btn = document.createElement('button');
+        btn.className = 'tab-btn';
+        btn.textContent = `${FLAGS[cur] || ''} ${cur}`;
+        btn.onclick = function() { filterCurrency(cur, this); };
+        tabs.appendChild(btn);
+      });
+    }
+
+    async function loadRates() {
+      try {
+        const res = await fetch('http://localhost:8000/api/rates');
+        const json = await res.json();
+        allData = json.data;
+        buildTabs(allData);
+        render(allData);
+        const now = new Date();
+        document.getElementById('updated').textContent =
+          `Yangilandi: ${now.toLocaleTimeString('uz-UZ')}`;
+      } catch(e) {
+        document.getElementById('tbody').innerHTML =
+          '<tr><td colspan="5" style="text-align:center;padding:40px;color:#f87171">API ga ulanib bo\'lmadi. uvicorn ishlaydimi?</td></tr>';
+      }
+    }
+
+    loadRates();
+    // Har 60 soniyada yangilash
+    setInterval(loadRates, 60000);
+  </script>
+</body>
+</html>
