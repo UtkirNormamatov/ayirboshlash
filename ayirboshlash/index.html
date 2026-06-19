@@ -3,221 +3,985 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ayirboshlash.uz — Valyuta kurslari</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>Ayirboshlash.uz | USD kurslari</title>
+  <meta
+    name="description"
+    content="O'zbekistonning 30 ta bankida USD sotib olish va sotish kurslarini sodda ko'rinishda solishtiring."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: #0a0a0f; min-height: 100vh; color: #fff; }
-    .bg-grid {
-      position: fixed; inset: 0; z-index: 0;
-      background-image: linear-gradient(rgba(255,184,0,0.04) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,184,0,0.04) 1px, transparent 1px);
-      background-size: 40px 40px; pointer-events: none;
+    :root {
+      --bg: #eef3f9;
+      --bg-soft: #ffffff;
+      --line: #d3deea;
+      --line-soft: #e6edf5;
+      --text: #142235;
+      --muted: #63758b;
+      --accent: #1463e1;
+      --accent-soft: #e9f1ff;
+      --good: #15803d;
+      --warn: #a16207;
+      --shadow: 0 18px 42px rgba(20, 34, 53, 0.07);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
     }
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 40px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      background: rgba(10,10,15,0.85); backdrop-filter: blur(12px);
-    }
-    .logo { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; text-decoration: none; color: #fff; }
-    .logo span { color: #FFB800; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: rgba(255,184,0,0.1); border: 1px solid rgba(255,184,0,0.25);
-      border-radius: 20px; padding: 5px 14px; font-size: 12px; color: #FFB800;
-    }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: #FFB800; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    main { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; }
-    h1 { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; letter-spacing: -2px; text-align: center; margin-bottom: 8px; }
-    h1 span { color: #FFB800; }
-    .subtitle { text-align: center; color: rgba(255,255,255,0.45); font-size: 15px; margin-bottom: 40px; }
 
-    /* FILTER TABS */
-    .tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
-    .tab-btn {
-      padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.5);
-      cursor: pointer; font-size: 13px; font-weight: 600; font-family: 'DM Sans', sans-serif;
-      transition: all 0.2s;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .tab-btn:hover, .tab-btn.active { background: #FFB800; color: #000; border-color: #FFB800; }
 
-    /* TABLE */
+    body {
+      min-height: 100vh;
+      font-family: "Manrope", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(20, 99, 225, 0.08), transparent 26%),
+        linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 28px;
+    }
+
+    .topbar,
+    .hero,
+    .summary,
+    .panel,
+    .footer {
+      background: var(--bg-soft);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow);
+    }
+
+    .topbar {
+      padding: 18px 22px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--text);
+    }
+
+    .brand strong {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: -0.05em;
+    }
+
+    .brand-copy {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid var(--line-soft);
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffffff 0%, #f3f7fc 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .lang-chip {
+      border: 0;
+      background: transparent;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .lang-chip.active {
+      background: linear-gradient(180deg, #1d72f2 0%, #1463e1 100%);
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(20, 99, 225, 0.22);
+    }
+
+    .hero {
+      margin-top: 18px;
+      padding: 34px;
+      border-radius: var(--radius-lg);
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 22px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+    }
+
+    .hero-copy {
+      max-width: 620px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.3rem, 5vw, 4rem);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+      max-width: 10ch;
+    }
+
+    .hero p {
+      margin-top: 18px;
+      max-width: 56ch;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .button-primary {
+      background: var(--text);
+      color: #fff;
+    }
+
+    .button-secondary {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .focus-card {
+      border: 1px solid var(--line-soft);
+      border-radius: 22px;
+      padding: 24px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+    }
+
+    .focus-card small,
+    .card-label,
+    .table-meta,
+    .footer-note {
+      color: var(--muted);
+    }
+
+    .focus-bank {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .focus-title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .focus-rate {
+      margin-top: 18px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: -0.05em;
+      color: var(--accent);
+    }
+
+    .focus-meta {
+      margin-top: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .summary {
+      margin-top: 18px;
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .summary-card {
+      border: 1px solid var(--line-soft);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fcfdff 0%, #f7faff 100%);
+    }
+
+    .card-label {
+      display: block;
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .card-value {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.55rem;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .card-subtext {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .panel {
+      margin-top: 18px;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+      letter-spacing: -0.05em;
+    }
+
+    .panel-head p {
+      color: var(--muted);
+      max-width: 48ch;
+      line-height: 1.65;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .searchbox {
+      flex: 1 1 320px;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .searchbox input {
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .searchbox input::placeholder {
+      color: #8a98a9;
+    }
+
+    .toolbar-meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
     .table-wrap {
-      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px; overflow: hidden; margin-bottom: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line-soft);
+      border-radius: 18px;
+      background: #fff;
     }
-    table { width: 100%; border-collapse: collapse; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
     thead th {
-      padding: 14px 20px; text-align: left; font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      text-align: left;
+      padding: 16px 18px;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #738398;
+      background: #f8fbff;
     }
-    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.15s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(255,184,0,0.04); }
-    td { padding: 16px 20px; font-size: 14px; }
-    .cur-cell { display: flex; align-items: center; gap: 10px; }
-    .cur-flag { font-size: 22px; }
-    .cur-code { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; }
-    .cur-name { font-size: 11px; color: rgba(255,255,255,0.4); }
-    .bank-badge {
-      display: inline-block; padding: 4px 10px; border-radius: 6px;
-      font-size: 11px; font-weight: 600;
-      background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6);
-    }
-    .buy-val { color: #4ade80; font-weight: 700; font-family: 'Syne', sans-serif; font-size: 16px; }
-    .sell-val { color: #f87171; font-weight: 700; font-family: 'Syne', sans-serif; font-size: 16px; }
-    .cb-val { color: #FFB800; font-size: 13px; }
 
-    /* LOADING */
-    .loading {
-      text-align: center; padding: 60px; color: rgba(255,255,255,0.3); font-size: 14px;
+    tbody tr {
+      border-top: 1px solid var(--line-soft);
     }
+
+    tbody tr:hover {
+      background: #f4f8ff;
+    }
+
+    td {
+      padding: 16px 18px;
+      vertical-align: middle;
+      font-size: 0.96rem;
+    }
+
+    .bank-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .bank-logo {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .bank-logo img {
+      width: 70%;
+      height: 70%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .bank-logo-fallback {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .bank-copy {
+      min-width: 0;
+    }
+
+    .bank-name {
+      display: block;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .bank-code {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .rate-buy,
+    .rate-sell,
+    .rate-cb {
+      font-family: "Space Grotesk", sans-serif;
+      letter-spacing: -0.03em;
+      font-size: 1rem;
+    }
+
+    .rate-buy {
+      color: var(--good);
+    }
+
+    .rate-sell {
+      color: var(--warn);
+    }
+
+    .delta {
+      display: inline-block;
+      margin-left: 8px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .loading-state,
+    .empty-state {
+      padding: 30px 18px;
+      text-align: center;
+      color: var(--muted);
+    }
+
     .spinner {
-      width: 32px; height: 32px; border: 2px solid rgba(255,184,0,0.2);
-      border-top-color: #FFB800; border-radius: 50%;
-      animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid #dce7f3;
+      border-top-color: var(--accent);
+      margin: 0 auto 12px;
+      animation: spin 0.8s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* UPDATED TIME */
-    .updated { text-align: center; font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 16px; }
+    .footer {
+      margin-top: 18px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
 
-    @media(max-width:600px) {
-      h1 { font-size: 32px; }
-      nav { padding: 14px 16px; }
-      td, thead th { padding: 12px 12px; }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .summary {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 18px, 1120px);
+      }
+
+      .topbar,
+      .footer,
+      .panel-head,
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero,
+      .panel {
+        padding: 20px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 720px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <nav>
-    <a class="logo" href="#">ayirboshlash<span>.uz</span></a>
-    <div class="badge"><div class="dot"></div> Jonli kurslar</div>
-  </nav>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#">
+        <strong>ayirboshlash.uz</strong>
+        <span class="brand-copy" id="brandTagline">30 ta bank bo'yicha USD kurslari</span>
+      </a>
+      <div class="topbar-right">
+        <div class="lang-switch" aria-label="Til tanlash">
+          <button class="lang-chip active" data-lang="uz" type="button">UZ</button>
+          <button class="lang-chip" data-lang="en" type="button">EN</button>
+          <button class="lang-chip" data-lang="ru" type="button">RU</button>
+        </div>
+      </div>
+    </header>
 
-  <main>
-    <h1>Valyuta <span>kurslari</span></h1>
-    <p class="subtitle">O'zbekiston banklaridagi bugungi valyuta kurslari</p>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow" id="heroEyebrow">Faqat USD. Faqat keraklisi.</div>
+        <h1 id="heroTitle">Banklar bo'yicha bugungi USD kurslari</h1>
+        <p id="heroBody">
+          O'zbekistondagi banklarning dollar sotib olish va sotish kurslari bir sahifada.
+          Ortiqcha valyutalar, murakkab filtrlash yoki shovqin yo'q.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#usd-table" id="heroButton">Jadvalni ko'rish</a>
+        </div>
+      </div>
 
-    <div class="tabs" id="tabs">
-      <button class="tab-btn active" onclick="filterCurrency('ALL', this)">Barchasi</button>
-    </div>
+      <article class="focus-card">
+        <small id="focusLabel">Eng yaxshi USD buy</small>
+        <div class="focus-bank">
+          <span class="bank-logo" id="focusLogo">A</span>
+          <div class="focus-title" id="focusTitle">Bank ma'lumoti kutilmoqda</div>
+        </div>
+        <div class="focus-rate" id="focusRate">—</div>
+        <div class="focus-meta" id="focusMeta">Snapshot yuklangandan keyin ko'rsatiladi</div>
+      </article>
+    </section>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Valyuta</th>
-            <th>Bank</th>
-            <th>Sotib olish</th>
-            <th>Sotish</th>
-            <th>MB kursi</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-          <tr><td colspan="5">
-            <div class="loading">
-              <div class="spinner"></div>
-              Kurslar yuklanmoqda...
-            </div>
-          </td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="updated" id="updated"></div>
-  </main>
+    <section class="summary">
+      <article class="summary-card">
+        <span class="card-label" id="bankCountLabel">Banklar</span>
+        <div class="card-value" id="bankCount">—</div>
+        <div class="card-subtext" id="bankCountSubtext">USD ko'rsatayotgan banklar</div>
+      </article>
+      <article class="summary-card">
+        <span class="card-label" id="bestBuyLabel">Eng yuqori buy</span>
+        <div class="card-value" id="bestBuy">—</div>
+        <div class="card-subtext" id="bestBuySubtext">Bugungi eng yaxshi sotib olish</div>
+      </article>
+      <article class="summary-card">
+        <span class="card-label" id="bestSellLabel">Eng past sell</span>
+        <div class="card-value" id="bestSell">—</div>
+        <div class="card-subtext" id="bestSellSubtext">Bugungi eng yaxshi sotish</div>
+      </article>
+      <article class="summary-card">
+        <span class="card-label" id="updatedLabel">Yangilangan</span>
+        <div class="card-value" id="updatedTime">—</div>
+        <div class="card-subtext" id="updatedDate">Yuklanmoqda</div>
+      </article>
+    </section>
+
+    <section class="panel" id="usd-table">
+      <div class="panel-head">
+        <div>
+          <h2 id="tableSectionTitle">USD kurslari jadvali</h2>
+          <p id="tableSectionBody">
+            Jadval USD buy qiymati bo'yicha saralanadi. Kerak bo'lsa bank nomi yoki kodi bo'yicha qidiring.
+          </p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <label class="searchbox" for="bankSearch">
+          <span>⌕</span>
+          <input id="bankSearch" type="search" placeholder="Bank nomi bo'yicha qidiring">
+        </label>
+        <span class="toolbar-meta" id="tableMeta">0 ta bank</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th id="bankHeader">Bank</th>
+              <th id="buyHeader">USD buy</th>
+              <th id="sellHeader">USD sell</th>
+            </tr>
+          </thead>
+          <tbody id="ratesTable">
+            <tr>
+              <td colspan="3">
+                <div class="loading-state">
+                  <div class="spinner"></div>
+                  <div id="loadingText">USD kurslari yuklanmoqda...</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a class="footer-note" href="https://t.me/bank_faoliyati" target="_blank" rel="noreferrer">Telegram: t.me/bank_faoliyati</a>
+    </footer>
+  </div>
 
   <script>
-    const FLAGS = {
-      USD:'🇺🇸', EUR:'🇪🇺', RUB:'🇷🇺', GBP:'🇬🇧',
-      CHF:'🇨🇭', JPY:'🇯🇵', KZT:'🇰🇿', AED:'🇦🇪', UZS:'🇺🇿'
-    };
-    const NAMES = {
-      USD:'AQSh dollari', EUR:'Yevro', RUB:'Rossiya rubli',
-      GBP:'Britaniya funt', CHF:'Shveytsariya franki',
-      JPY:'Yaponiya iyenasi', KZT:'Qozog\'iston tengesi',
-      AED:'BAA dirhami', UZS:'O\'zbek so\'mi'
+    const state = {
+      allRows: [],
+      query: "",
+      updatedAt: null,
+      lang: "uz"
     };
 
-    let allData = [];
-    let currentFilter = 'ALL';
+    const I18N = {
+      uz: {
+        pageTitle: "Ayirboshlash.uz | USD kurslari",
+        metaDescription: "O'zbekistonning 30 ta bankida USD sotib olish va sotish kurslarini sodda ko'rinishda solishtiring.",
+        brandTagline: "30 ta bank bo'yicha USD kurslari",
+        heroEyebrow: "Faqat USD. Faqat keraklisi.",
+        heroTitle: "Banklar bo'yicha bugungi USD kurslari",
+        heroBody: "O'zbekistondagi banklarning dollar sotib olish va sotish kurslari bir sahifada. Ortiqcha valyutalar, murakkab filtrlash yoki shovqin yo'q.",
+        heroButton: "Jadvalni ko'rish",
+        focusLabel: "Eng yaxshi USD buy",
+        focusWaiting: "Bank ma'lumoti kutilmoqda",
+        focusPending: "Snapshot yuklangandan keyin ko'rsatiladi",
+        focusMissing: "USD buy ma'lumoti topilmadi",
+        bankCountLabel: "Banklar",
+        bankCountSubtext: "USD ko'rsatayotgan banklar",
+        bestBuyLabel: "Eng yuqori buy",
+        bestBuySubtext: "Bugungi eng yaxshi sotib olish",
+        bestSellLabel: "Eng past sell",
+        bestSellSubtext: "Bugungi eng yaxshi sotish",
+        updatedLabel: "Yangilangan",
+        updatedMissing: "Yangilanish topilmadi",
+        updatedLoading: "Yuklanmoqda",
+        tableSectionTitle: "USD kurslari jadvali",
+        tableSectionBody: "Jadval USD buy qiymati bo'yicha saralanadi. Kerak bo'lsa bank nomi yoki kodi bo'yicha qidiring.",
+        searchPlaceholder: "Bank nomi bo'yicha qidiring",
+        bankHeader: "Bank",
+        buyHeader: "USD buy",
+        sellHeader: "USD sell",
+        loadingText: "USD kurslari yuklanmoqda...",
+        emptySearch: "Qidiruv bo'yicha bank topilmadi",
+        ratesLoadError: "rates.json yuklanmadi",
+        tableMeta: (count) => `${count} ta bank`,
+        focusMeta: (code, sell) => `${code} • Sell: ${sell}`,
+        telegram: "Telegram: t.me/bank_faoliyati"
+      },
+      en: {
+        pageTitle: "Ayirboshlash.uz | USD rates",
+        metaDescription: "Compare USD buy and sell rates across 30 banks in Uzbekistan in a simple view.",
+        brandTagline: "USD rates across 30 banks",
+        heroEyebrow: "USD only. Nothing extra.",
+        heroTitle: "Today's USD rates by bank",
+        heroBody: "USD buy and sell rates from banks in Uzbekistan, gathered on one page. No extra currencies, no noisy filters, no clutter.",
+        heroButton: "View table",
+        focusLabel: "Best USD buy",
+        focusWaiting: "Waiting for bank data",
+        focusPending: "Shown after the snapshot loads",
+        focusMissing: "No USD buy data found",
+        bankCountLabel: "Banks",
+        bankCountSubtext: "Banks showing USD",
+        bestBuyLabel: "Highest buy",
+        bestBuySubtext: "Best buy rate today",
+        bestSellLabel: "Lowest sell",
+        bestSellSubtext: "Best sell rate today",
+        updatedLabel: "Updated",
+        updatedMissing: "No update found",
+        updatedLoading: "Loading",
+        tableSectionTitle: "USD rates table",
+        tableSectionBody: "The table is sorted by USD buy price. Search by bank name or bank code if needed.",
+        searchPlaceholder: "Search by bank name",
+        bankHeader: "Bank",
+        buyHeader: "USD buy",
+        sellHeader: "USD sell",
+        loadingText: "Loading USD rates...",
+        emptySearch: "No banks matched your search",
+        ratesLoadError: "Failed to load rates.json",
+        tableMeta: (count) => `${count} banks`,
+        focusMeta: (code, sell) => `${code} • Sell: ${sell}`,
+        telegram: "Telegram: t.me/bank_faoliyati"
+      },
+      ru: {
+        pageTitle: "Ayirboshlash.uz | Курсы USD",
+        metaDescription: "Сравнивайте курсы покупки и продажи USD по 30 банкам Узбекистана в простом интерфейсе.",
+        brandTagline: "Курсы USD по 30 банкам",
+        heroEyebrow: "Только USD. Без лишнего.",
+        heroTitle: "Сегодняшние курсы USD по банкам",
+        heroBody: "Курсы покупки и продажи доллара в банках Узбекистана собраны на одной странице. Без лишних валют, сложных фильтров и шума.",
+        heroButton: "Смотреть таблицу",
+        focusLabel: "Лучший курс покупки USD",
+        focusWaiting: "Ожидание данных банка",
+        focusPending: "Появится после загрузки снимка",
+        focusMissing: "Данные по покупке USD не найдены",
+        bankCountLabel: "Банки",
+        bankCountSubtext: "Банки с курсом USD",
+        bestBuyLabel: "Макс. покупка",
+        bestBuySubtext: "Лучший курс покупки сегодня",
+        bestSellLabel: "Мин. продажа",
+        bestSellSubtext: "Лучший курс продажи сегодня",
+        updatedLabel: "Обновлено",
+        updatedMissing: "Обновление не найдено",
+        updatedLoading: "Загрузка",
+        tableSectionTitle: "Таблица курсов USD",
+        tableSectionBody: "Таблица отсортирована по курсу покупки USD. При необходимости ищите по названию банка или коду.",
+        searchPlaceholder: "Поиск по названию банка",
+        bankHeader: "Банк",
+        buyHeader: "Покупка USD",
+        sellHeader: "Продажа USD",
+        loadingText: "Загрузка курсов USD...",
+        emptySearch: "По вашему запросу банки не найдены",
+        ratesLoadError: "Не удалось загрузить rates.json",
+        tableMeta: (count) => `${count} банков`,
+        focusMeta: (code, sell) => `${code} • Продажа: ${sell}`,
+        telegram: "Telegram: t.me/bank_faoliyati"
+      }
+    };
 
-    function fmt(n) {
-      if (!n && n !== 0) return '—';
-      return Number(n).toLocaleString('ru-RU', {minimumFractionDigits: 0, maximumFractionDigits: 2});
+    function t(key) {
+      return I18N[state.lang][key];
     }
 
-    function render(data) {
-      const tbody = document.getElementById('tbody');
-      if (!data.length) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:rgba(255,255,255,0.3)">Ma\'lumot topilmadi</td></tr>';
+    function dateLocale() {
+      return state.lang === "ru" ? "ru-RU" : state.lang === "en" ? "en-US" : "uz-UZ";
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = state.lang;
+      document.title = t("pageTitle");
+      document.querySelector('meta[name="description"]').setAttribute("content", t("metaDescription"));
+      document.getElementById("brandTagline").textContent = t("brandTagline");
+      document.getElementById("heroEyebrow").textContent = t("heroEyebrow");
+      document.getElementById("heroTitle").textContent = t("heroTitle");
+      document.getElementById("heroBody").textContent = t("heroBody");
+      document.getElementById("heroButton").textContent = t("heroButton");
+      document.getElementById("focusLabel").textContent = t("focusLabel");
+      document.getElementById("bankCountLabel").textContent = t("bankCountLabel");
+      document.getElementById("bankCountSubtext").textContent = t("bankCountSubtext");
+      document.getElementById("bestBuyLabel").textContent = t("bestBuyLabel");
+      document.getElementById("bestBuySubtext").textContent = t("bestBuySubtext");
+      document.getElementById("bestSellLabel").textContent = t("bestSellLabel");
+      document.getElementById("bestSellSubtext").textContent = t("bestSellSubtext");
+      document.getElementById("updatedLabel").textContent = t("updatedLabel");
+      document.getElementById("tableSectionTitle").textContent = t("tableSectionTitle");
+      document.getElementById("tableSectionBody").textContent = t("tableSectionBody");
+      document.getElementById("bankSearch").placeholder = t("searchPlaceholder");
+      document.getElementById("bankHeader").textContent = t("bankHeader");
+      document.getElementById("buyHeader").textContent = t("buyHeader");
+      document.getElementById("sellHeader").textContent = t("sellHeader");
+      const loadingText = document.getElementById("loadingText");
+      if (loadingText) {
+        loadingText.textContent = t("loadingText");
+      }
+      document.querySelector(".footer-note").textContent = t("telegram");
+      document.querySelectorAll(".lang-chip").forEach((chip) => {
+        chip.classList.toggle("active", chip.dataset.lang === state.lang);
+      });
+      updateSummary(state.allRows);
+      updateFocus(state.allRows);
+      applyFilters();
+    }
+
+    const fmt = (value) => {
+      if (value === null || value === undefined || value === "") {
+        return "—";
+      }
+
+      const num = Number(value);
+      if (Number.isNaN(num)) {
+        return "—";
+      }
+
+      return new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }).format(num);
+    };
+
+    const shortTime = (date) => new Intl.DateTimeFormat(dateLocale(), {
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(date);
+
+    const longDate = (date) => new Intl.DateTimeFormat(dateLocale(), {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }).format(date);
+
+    function createFallbackLogo(text) {
+      const span = document.createElement("span");
+      span.className = "bank-logo bank-logo-fallback";
+      span.textContent = text;
+      return span;
+    }
+
+    window.createFallbackLogo = createFallbackLogo;
+
+    function logoMarkup(row) {
+      const src = `./logos/${row.bank_code}.png`;
+      const fallback = (row.bank_name || row.bank_code || "?")
+        .split(" ")
+        .map((part) => part[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
+
+      return `
+        <span class="bank-logo">
+          <img src="${src}" alt="${row.bank_name}" loading="lazy" onerror="this.replaceWith(createFallbackLogo('${fallback}'))">
+        </span>
+      `;
+    }
+
+    function updateSummary(rows) {
+      document.getElementById("bankCount").textContent = String(rows.length || 0);
+
+      const buyRows = rows.filter((row) => row.buy !== null && row.buy !== undefined);
+      const sellRows = rows.filter((row) => row.sell !== null && row.sell !== undefined);
+      const bestBuy = buyRows.length
+        ? buyRows.reduce((best, row) => Number(row.buy) > Number(best.buy) ? row : best)
+        : null;
+      const bestSell = sellRows.length
+        ? sellRows.reduce((best, row) => Number(row.sell) < Number(best.sell) ? row : best)
+        : null;
+
+      document.getElementById("bestBuy").textContent = bestBuy ? fmt(bestBuy.buy) : "—";
+      document.getElementById("bestSell").textContent = bestSell ? fmt(bestSell.sell) : "—";
+
+      if (!state.updatedAt) {
+        document.getElementById("updatedTime").textContent = "—";
+        document.getElementById("updatedDate").textContent = t("updatedMissing");
         return;
       }
-      tbody.innerHTML = data.map(r => `
-        <tr>
-          <td>
-            <div class="cur-cell">
-              <span class="cur-flag">${FLAGS[r.currency] || '🏳️'}</span>
-              <span>
-                <div class="cur-code">${r.currency}</div>
-                <div class="cur-name">${NAMES[r.currency] || ''}</div>
-              </span>
-            </div>
-          </td>
-          <td><span class="bank-badge">${r.bank_name}</span></td>
-          <td><span class="buy-val">${fmt(r.buy)}</span></td>
-          <td><span class="sell-val">${fmt(r.sell)}</span></td>
-          <td><span class="cb-val">${fmt(r.cb_rate)}</span></td>
-        </tr>
-      `).join('');
+
+      document.getElementById("updatedTime").textContent = shortTime(state.updatedAt);
+      document.getElementById("updatedDate").textContent = longDate(state.updatedAt);
     }
 
-    function filterCurrency(cur, btn) {
-      currentFilter = cur;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filtered = cur === 'ALL' ? allData : allData.filter(r => r.currency === cur);
-      render(filtered);
+    function updateFocus(rows) {
+      const pool = rows.filter((row) => row.buy !== null && row.buy !== undefined);
+      if (!pool.length) {
+        document.getElementById("focusTitle").textContent = t("focusMissing");
+        document.getElementById("focusRate").textContent = "—";
+        document.getElementById("focusMeta").textContent = t("focusPending");
+        document.getElementById("focusLogo").outerHTML = '<span class="bank-logo bank-logo-fallback" id="focusLogo">A</span>';
+        return;
+      }
+
+      const best = pool.reduce((winner, row) => Number(row.buy) > Number(winner.buy) ? row : winner);
+
+      document.getElementById("focusTitle").textContent = best.bank_name;
+      document.getElementById("focusRate").textContent = fmt(best.buy);
+      document.getElementById("focusMeta").textContent = t("focusMeta")(best.bank_code, fmt(best.sell));
+      document.getElementById("focusLogo").outerHTML = logoMarkup(best).replace('class="bank-logo"', 'class="bank-logo" id="focusLogo"');
     }
 
-    function buildTabs(data) {
-      const currencies = [...new Set(data.map(r => r.currency))].sort();
-      const tabs = document.getElementById('tabs');
-      tabs.innerHTML = `<button class="tab-btn active" onclick="filterCurrency('ALL', this)">Barchasi</button>`;
-      currencies.forEach(cur => {
-        const btn = document.createElement('button');
-        btn.className = 'tab-btn';
-        btn.textContent = `${FLAGS[cur] || ''} ${cur}`;
-        btn.onclick = function() { filterCurrency(cur, this); };
-        tabs.appendChild(btn);
+    function renderRows(rows) {
+      const tbody = document.getElementById("ratesTable");
+      document.getElementById("tableMeta").textContent = t("tableMeta")(rows.length);
+
+      if (!rows.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="3">
+              <div class="empty-state">${t("emptySearch")}</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((row) => {
+        return `
+          <tr>
+            <td>
+              <div class="bank-cell">
+                ${logoMarkup(row)}
+                <span class="bank-copy">
+                  <span class="bank-name">${row.bank_name}</span>
+                  <span class="bank-code">${row.bank_code}</span>
+                </span>
+              </div>
+            </td>
+            <td><span class="rate-buy">${fmt(row.buy)}</span></td>
+            <td><span class="rate-sell">${fmt(row.sell)}</span></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function applyFilters() {
+      const query = state.query.trim().toLowerCase();
+      const rows = state.allRows
+        .filter((row) => {
+          if (!query) {
+            return true;
+          }
+
+          return [row.bank_name, row.bank_code]
+            .filter(Boolean)
+            .some((value) => value.toLowerCase().includes(query));
+        })
+        .sort((left, right) => {
+          const rightBuy = right.buy === null ? -Infinity : Number(right.buy);
+          const leftBuy = left.buy === null ? -Infinity : Number(left.buy);
+          if (rightBuy !== leftBuy) {
+            return rightBuy - leftBuy;
+          }
+          return left.bank_name.localeCompare(right.bank_name);
+        });
+
+      renderRows(rows);
+    }
+
+    function attachEvents() {
+      document.getElementById("bankSearch").addEventListener("input", (event) => {
+        state.query = event.target.value;
+        applyFilters();
+      });
+
+      document.querySelector(".lang-switch").addEventListener("click", (event) => {
+        const button = event.target.closest(".lang-chip");
+        if (!button) {
+          return;
+        }
+        state.lang = button.dataset.lang;
+        applyLanguage();
       });
     }
 
     async function loadRates() {
       try {
-        const res = await fetch('http://localhost:8000/api/rates');
-        const json = await res.json();
-        allData = json.data;
-        buildTabs(allData);
-        render(allData);
-        const now = new Date();
-        document.getElementById('updated').textContent =
-          `Yangilandi: ${now.toLocaleTimeString('uz-UZ')}`;
-      } catch(e) {
-        document.getElementById('tbody').innerHTML =
-          '<tr><td colspan="5" style="text-align:center;padding:40px;color:#f87171">API ga ulanib bo\'lmadi. uvicorn ishlaydimi?</td></tr>';
+        const response = await fetch(`./rates.json?_=${Date.now()}`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const payload = await response.json();
+        const rows = Array.isArray(payload.data) ? payload.data : [];
+        const usdRows = rows.filter((row) => row.currency === "USD");
+
+        state.allRows = usdRows;
+        state.updatedAt = payload.updated_at ? new Date(payload.updated_at) : null;
+
+        updateSummary(usdRows);
+        updateFocus(usdRows);
+        applyFilters();
+
+      } catch (error) {
+        document.getElementById("ratesTable").innerHTML = `
+          <tr>
+            <td colspan="3">
+              <div class="empty-state" style="color:#b91c1c;">${t("ratesLoadError")}</div>
+            </td>
+          </tr>
+        `;
       }
     }
 
+    attachEvents();
+    applyLanguage();
     loadRates();
-    // Har 60 soniyada yangilash
-    setInterval(loadRates, 60000);
+    setInterval(loadRates, 600000);
   </script>
 </body>
 </html>
